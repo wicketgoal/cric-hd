@@ -118,9 +118,48 @@ body.dark button {
 
 <!-- Video Player -->
 <div id="player-container">
-  <video id="videoPlayer" controls autoplay playsinline></video>
+  <!-- Only one element will be visible at a time -->
+  <video id="videoPlayer" controls autoplay playsinline style="display:none;"></video>
   <iframe id="iframeViewer" style="display:none;"></iframe>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
+<script>
+const params = new URLSearchParams(window.location.search);
+const src = params.get("src");
+
+const video = document.getElementById("videoPlayer");
+const iframe = document.getElementById("iframeViewer");
+
+// Hide both initially
+video.style.display = "none";
+iframe.style.display = "none";
+
+if(src){
+  const isHLS = src.toLowerCase().includes(".m3u8");
+  const videoExt = ["mp4","webm","ogg","mov","mkv"];
+  const isVideo = videoExt.some(ext => src.toLowerCase().includes(ext));
+
+  if(isHLS || isVideo){
+    // Show video player only
+    video.style.display = "block";
+    if(isHLS && Hls.isSupported()){
+      const hls = new Hls();
+      hls.loadSource(src);
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
+    } else {
+      video.src = src;
+      video.addEventListener("loadeddata", () => video.play());
+    }
+  } else {
+    // Show iframe player only
+    iframe.style.display = "block";
+    iframe.src = src;
+  }
+}
+</script>
+
 
 <!-- LIVE Chat Button -->
 <button id="live-chat-btn">LIVE Chat</button>
@@ -181,3 +220,4 @@ document.getElementById('live-chat-btn').onclick = () => {
 
 </body>
 </html>
+
