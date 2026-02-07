@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRIC HD - Home</title>
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #111 0%, #000 70%);
+  color: #fff;
+  overflow: hidden;
+  text-align: center;
+}
+
+.pulse {
+  animation: pulse 1.5s infinite;
+  font-size: 28px;
+  margin-top: 20vh;
+}
+
+@keyframes pulse { 0%,100% {opacity:0.3;} 50% {opacity:1;} }
+
+.loader {
+  margin: 50px auto;
+  width: 60px;
+  height: 60px;
+  border: 6px solid rgba(255,255,255,0.2);
+  border-top: 6px solid #ff0000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin { 0% {transform: rotate(0deg);} 100% {transform: rotate(360deg);} }
+
+.note {
+  margin-top: 20px;
+  color: #aaa;
+  font-size: 16px;
+}
+</style>
+</head>
+<body>
+
+<div class="pulse">MATCH HASN'T STARTED YET</div>
+<div class="loader"></div>
+<div class="note">Please stay tuned for the live stream</div>
+
+</body>
+</html>
