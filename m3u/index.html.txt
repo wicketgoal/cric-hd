@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Website Embed Player</title>
+
+<style>
+html, body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+#iframeViewer {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+#loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 6px solid rgba(255,255,255,0.2);
+  border-top: 6px solid #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 0.9s linear infinite;
+  z-index: 20;
+}
+
+@keyframes spin {
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+</style>
+</head>
+
+<body>
+
+<div id="loader"></div>
+<iframe id="iframeViewer" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
+<script>
+// --- Websites to embed ---
+const streams = {
+  "ts": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/tsports/index.m3u8",
+  "wl": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/willow/index.m3u8",
+  "ptv": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/ptvsports/index.m3u8",
+  "ss": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/star-sports/index.m3u8",
+  "as": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/asports/index.m3u8",
+  "ss2": "https://playerhls.com/tv/video-player.php?url=https://playztv-apps.pages.dev/star-sports2/index.m3u8",
+    "new": "https://embedsports.top/embed/echo/mens-t20-world-cup-west-indies-vs-scotland-cricket-hundred-1/1"
+};
+
+// Get stream ID from URL (?id=site1)
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id") || "site1";
+const url = streams[id];
+
+const iframe = document.getElementById("iframeViewer");
+const loader = document.getElementById("loader");
+
+if (!url) {
+  loader.innerHTML = "Invalid URL";
+} else {
+  iframe.src = url;
+
+  // Hide loader once iframe loads
+  iframe.onload = () => {
+    loader.style.display = "none";
+  };
+}
+</script>
+
+</body>
+</html>
