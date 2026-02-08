@@ -3,222 +3,235 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WicketGoal - Live Stream</title>
+<title>Wicket Goal • Live Stream</title>
+
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
 
 <style>
+:root {
+  --bg: #f5f5f5;
+  --card: #ffffff;
+  --text: #000;
+  --muted: #666;
+}
+
+body.dark {
+  --bg: #0f0f0f;
+  --card: #1c1c1c;
+  --text: #fff;
+  --muted: #aaa;
+}
+
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #000;
+  background: var(--bg);
+  color: var(--text);
+  transition: 0.3s;
 }
 
 /* ===== Header ===== */
 header {
   text-align: center;
-  padding: 20px 0;
-  background: #fff;
+  background: var(--card);
+  padding: 18px 10px;
   border-bottom: 1px solid #ccc;
 }
 
 header img {
-  height: 60px;
+  height: 55px;
 }
 
-/* ===== Buttons ===== */
-#header-buttons {
+.buttons {
   margin-top: 10px;
 }
 
 button {
-  padding: 8px 15px;
-  margin: 5px;
   border: none;
-  border-radius: 5px;
-  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 6px;
   font-weight: bold;
+  cursor: pointer;
 }
-#refresh-btn { background: #ff0000; color: #fff; }
-#darkmode-btn { background: #0066ff; color: #fff; }
 
-/* ===== Info Text ===== */
-#info-text {
-  text-align: center;
-  margin: 5px 0;
-  color: #555;
+#refresh {
+  background: #ff2b2b;
+  color: #fff;
+}
+
+#dark {
+  background: #0066ff;
+  color: #fff;
+}
+
+/* ===== Loading Message ===== */
+.notice {
+  margin-top: 8px;
   font-size: 14px;
+  color: var(--muted);
+  animation: pulse 1.5s infinite;
 }
 
-/* ===== Video Player ===== */
-#player-container {
-  max-width: 900px;
-  margin: 20px auto;
-  position: relative;
+@keyframes pulse {
+  0% { opacity: 0.4; }
+  50% { opacity: 1; }
+  100% { opacity: 0.4; }
 }
+
+/* ===== Player ===== */
+.player-wrap {
+  max-width: 900px;
+  margin: 25px auto;
+}
+
 video, iframe {
   width: 100%;
   height: 500px;
-  border-radius: 8px;
   background: #000;
+  border-radius: 10px;
+  display: none;
 }
 
-/* ===== LIVE Chat Button ===== */
-#live-chat-btn {
+/* ===== Chat ===== */
+.chat-toggle {
   display: block;
   margin: 15px auto;
-  background: #0066ff;
+  background: #007bff;
   color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-weight: bold;
+  padding: 10px 22px;
+  border-radius: 20px;
 }
 
-/* ===== DMCA Section ===== */
+.chat-box {
+  max-width: 900px;
+  margin: 10px auto;
+  background: var(--card);
+  border-radius: 10px;
+  padding: 10px;
+  display: none;
+}
+
+.chat-messages {
+  height: 200px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  margin-top: 8px;
+}
+
+.chat-input input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.chat-input button {
+  margin-left: 5px;
+  background: #28a745;
+  color: #fff;
+}
+
+/* ===== DMCA ===== */
 footer {
   max-width: 900px;
-  margin: 20px auto;
-  background: #e0e0e0;
+  margin: 25px auto;
+  background: var(--card);
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 12px;
-  line-height: 1.5;
+  color: var(--muted);
 }
 
-/* ===== Dark Mode ===== */
-body.dark {
-  background: #111;
-  color: #fff;
-}
-body.dark footer {
-  background: #222;
-  color: #ccc;
-}
-body.dark button {
-  color: #fff;
-}
-
-/* ===== Responsive ===== */
+/* Mobile */
 @media(max-width:768px){
-  video, iframe { height: 250px; }
+  video, iframe { height: 240px; }
 }
 </style>
 </head>
+
 <body>
 
-<!-- Header / Logo -->
 <header>
-  <img src="https://blogger.googleusercontent.com/img/a/AVvXsEhoxpwoPC4C3SOKKQ2qhb-iDNeYGafQmJmu2CwtjzBBidp4JYJEFGjmjN4PFhO6Te5x2zNbzZlQqrBi2vaIGjNfE9qSF2VJRzEqxh9ulPnJAGdKZB5ZhB5XVIqSgZR2AHjSq4VRzb6uLdlIKJvhsl5-BxKnRocPqMYNxqJxR1AWLeNuR_jEXSP1540tqyw=s313" alt="Logo">
-  <div id="header-buttons">
-    <button id="refresh-btn">Refresh</button>
-    <button id="darkmode-btn">Dark Mode</button>
+  <img src="/logo.png" alt="CRIC HD Logo">
+  <div class="buttons">
+    <button id="refresh">Refresh</button>
+    <button id="dark">Dark Mode</button>
   </div>
-  <div id="info-text">Wait for Loading or Try other Links & Please Refresh if Lag</div>
+  <div class="notice">
+    Loading stream… If buffering occurs, refresh or try another link
+  </div>
 </header>
 
-<!-- Video Player -->
-<div id="player-container">
-  <!-- Only one element will be visible at a time -->
-  <video id="videoPlayer" controls autoplay playsinline style="display:none;"></video>
-  <iframe id="iframeViewer" style="display:none;"></iframe>
+<div class="player-wrap">
+  <video id="video" controls playsinline></video>
+  <iframe id="frame"></iframe>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
-<script>
-const params = new URLSearchParams(window.location.search);
-const src = params.get("src");
+<button class="chat-toggle" id="chatBtn">💬 LIVE CHAT</button>
 
-const video = document.getElementById("videoPlayer");
-const iframe = document.getElementById("iframeViewer");
+<div class="chat-box" id="chatBox">
+  <div class="chat-messages" id="messages"></div>
+  <div class="chat-input">
+    <input id="msg" placeholder="Type your message…" />
+    <button onclick="send()">Send</button>
+  </div>
+</div>
 
-// Hide both initially
-video.style.display = "none";
-iframe.style.display = "none";
-
-if(src){
-  const isHLS = src.toLowerCase().includes(".m3u8");
-  const videoExt = ["mp4","webm","ogg","mov","mkv"];
-  const isVideo = videoExt.some(ext => src.toLowerCase().includes(ext));
-
-  if(isHLS || isVideo){
-    // Show video player only
-    video.style.display = "block";
-    if(isHLS && Hls.isSupported()){
-      const hls = new Hls();
-      hls.loadSource(src);
-      hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-    } else {
-      video.src = src;
-      video.addEventListener("loadeddata", () => video.play());
-    }
-  } else {
-    // Show iframe player only
-    iframe.style.display = "block";
-    iframe.src = src;
-  }
-}
-</script>
-
-
-<!-- LIVE Chat Button -->
-<button id="live-chat-btn">LIVE Chat</button>
-
-<!-- DMCA / Legal -->
 <footer>
-  <strong>Legal Disclaimer</strong><br>
-  Content Hosting: CRIC HD does not host or upload any video content. All streams are embedded from publicly available third-party sources.<br><br>
-  Copyright Notice: We do not claim ownership of any content displayed on this platform.<br><br>
-  Legal Responsibility: CRIC HD is not responsible for legality of content hosted by third parties.<br><br>
-  DMCA Compliance: If you are a copyright owner and believe any content infringes your rights, please contact the hosting provider or CRIC HD and we will remove it immediately.
+<b>Legal Disclaimer</b><br><br>
+CRIC HD does not host or upload any video content. All streams are embedded from third-party public sources.
+<br><br>
+If you are a copyright owner and believe any content infringes your rights, please contact the source provider.
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.0"></script>
 <script>
-// ----- Refresh Button -----
-document.getElementById('refresh-btn').onclick = () => location.reload();
+/* Refresh */
+document.getElementById("refresh").onclick = () => location.reload();
 
-// ----- Dark Mode Toggle -----
-document.getElementById('darkmode-btn').onclick = () => {
-  document.body.classList.toggle('dark');
-};
+/* Dark mode */
+document.getElementById("dark").onclick = () =>
+  document.body.classList.toggle("dark");
 
-// ----- Load Video from ?src= -----
-const params = new URLSearchParams(window.location.search);
-const src = params.get("src");
+/* Chat */
+const chatBtn = document.getElementById("chatBtn");
+const chatBox = document.getElementById("chatBox");
 
-const video = document.getElementById("videoPlayer");
-const iframe = document.getElementById("iframeViewer");
+chatBtn.onclick = () =>
+  chatBox.style.display =
+    chatBox.style.display === "block" ? "none" : "block";
+
+function send(){
+  const input = document.getElementById("msg");
+  if(!input.value) return;
+  const div = document.createElement("div");
+  div.textContent = "Viewer: " + input.value;
+  document.getElementById("messages").appendChild(div);
+  input.value = "";
+}
+
+/* Player */
+const src = new URLSearchParams(location.search).get("src");
+const video = document.getElementById("video");
+const frame = document.getElementById("frame");
 
 if(src){
-  const isHLS = src.toLowerCase().includes(".m3u8");
-  const videoExt = ["mp4","webm","ogg","mov","mkv"];
-  const isVideo = videoExt.some(ext => src.toLowerCase().includes(ext));
-
-  if(isHLS || isVideo){
+  if(src.includes(".m3u8")){
     video.style.display = "block";
-    if(isHLS && Hls.isSupported()){
+    if(Hls.isSupported()){
       const hls = new Hls();
       hls.loadSource(src);
       hls.attachMedia(video);
-      hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-    } else {
-      video.src = src;
-      video.addEventListener("loadeddata", () => video.play());
-    }
+    } else video.src = src;
   } else {
-    iframe.style.display = "block";
-    iframe.src = src;
+    frame.style.display = "block";
+    frame.src = src;
   }
 }
-
-// ----- LIVE Chat Placeholder -----
-document.getElementById('live-chat-btn').onclick = () => {
-  alert("Live Chat coming soon!");
-};
 </script>
 
 </body>
 </html>
-
-
