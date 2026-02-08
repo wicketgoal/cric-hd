@@ -2,199 +2,160 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Cric HD Live</title>
+<title>YoNoTV – Live Stream</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Google Font -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 <style>
-:root{
-  --bg:#0f172a;
-  --card:#111827;
-  --text:#e5e7eb;
-  --accent:#22c55e;
-}
-.light{
-  --bg:#f1f5f9;
-  --card:#ffffff;
-  --text:#020617;
-}
-
-*{margin:0;padding:0;box-sizing:border-box;font-family:Poppins,sans-serif}
-
 body{
-  background:var(--bg);
-  color:var(--text);
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#f5f5f5;
+  color:#000;
+}
+body.dark{
+  background:#0f0f0f;
+  color:#fff;
 }
 
-/* HEADER */
-header{
-  background:#020617;
-  padding:12px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:10px;
 }
-header img{height:40px}
-.header-btns button{
-  background:#1f2933;
-  color:#fff;
+
+header{
+  text-align:center;
+  padding:10px 0;
+}
+
+header img{
+  height:55px;
+}
+
+.controls{
+  text-align:center;
+  margin:10px 0;
+}
+
+.controls button{
+  padding:8px 14px;
   border:none;
-  padding:6px 12px;
   border-radius:6px;
   cursor:pointer;
+  font-weight:bold;
+  margin:0 5px;
 }
 
-/* LAYOUT */
-.main{
-  display:grid;
-  grid-template-columns:120px 1fr 120px;
-  gap:10px;
-  padding:10px;
-}
-.sidebar img{
-  width:100%;
-  border-radius:10px;
+.refresh{ background:#ff0000; color:#fff; }
+.darkbtn{ background:#0066ff; color:#fff; }
+
+.notice{
+  text-align:center;
+  background:#ddd;
+  padding:8px;
+  border-radius:6px;
   margin-bottom:10px;
 }
+body.dark .notice{ background:#222; }
 
-/* PLAYER */
-.player-box{
-  background:var(--card);
-  padding:12px;
-  border-radius:14px;
-}
-video, iframe{
+.player-wrap{
+  position:relative;
   width:100%;
-  height:360px;
-  border-radius:12px;
-  background:black;
-}
-
-/* INFO BUTTON */
-.info-btn{
-  margin-top:10px;
-  background:#1f2937;
-  color:#e5e7eb;
-  padding:12px;
-  text-align:center;
-  border-radius:10px;
-  font-size:14px;
-}
-
-/* ACTION BUTTONS */
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:10px;
-}
-.actions button{
-  flex:1;
-  background:var(--accent);
-  color:#022c22;
-  border:none;
-  padding:10px;
-  border-radius:10px;
-  font-weight:600;
-  cursor:pointer;
-}
-
-/* CHAT */
-.chat{
-  margin-top:12px;
-  height:260px;
+  height:0;
+  padding-top:56.25%;
+  background:#000;
   border-radius:12px;
   overflow:hidden;
-  background:#020617;
 }
 
-/* FOOTER */
-footer{
-  margin:15px;
+.player-wrap iframe{
+  position:absolute;
+  top:0; left:0;
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+.side-ads{
+  display:flex;
+  justify-content:space-between;
+  margin-top:10px;
+}
+
+.side-ads img{
+  width:49%;
+  border-radius:8px;
+}
+
+.chat{
   text-align:center;
-  font-size:12px;
-  opacity:.7;
+  margin:15px 0;
 }
 
-@media(max-width:768px){
-  .main{grid-template-columns:1fr}
-  .sidebar{display:none}
-  video,iframe{height:220px}
+.chat button{
+  background:#007bff;
+  color:#fff;
+  border:none;
+  padding:10px 20px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
 }
+
+.footer{
+  background:#e0e0e0;
+  padding:15px;
+  border-radius:10px;
+  font-size:14px;
+  margin-top:15px;
+}
+body.dark .footer{ background:#1a1a1a; }
 </style>
 </head>
 
 <body>
 
+<div class="container">
+
 <header>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/a/ab/Logo_TV_2015.png">
-  <div class="header-btns">
-    <button onclick="toggleMode()">🌙</button>
-    <button onclick="location.reload()">⟳ Refresh</button>
-  </div>
+  <img src="/logo.png" alt="Logo">
 </header>
 
-<div class="main">
+<div class="controls">
+  <button class="refresh" onclick="location.reload()">Refresh</button>
+  <button class="darkbtn" onclick="toggleDark()">Dark Mode</button>
+</div>
 
-  <!-- LEFT ADS -->
-  <div class="sidebar">
-    <img src="https://via.placeholder.com/120x300?text=Ad">
-    <img src="https://via.placeholder.com/120x300?text=Ad">
-  </div>
+<div class="notice">
+  Loading stream… If buffering occurs, refresh or try another link
+</div>
 
-  <!-- CENTER -->
-  <div class="player-box">
+<div class="player-wrap">
+  <iframe id="frame" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+</div>
 
-    <!-- VIDEO -->
-    <video id="player" controls autoplay muted></video>
+<div class="chat">
+  <button onclick="alert('Chat system coming soon')">💬 LIVE CHAT</button>
+</div>
 
-    <!-- LOADING MESSAGE BUTTON -->
-    <div class="info-btn">
-      ⏳ Loading stream… If buffering occurs, refresh or try another link
-    </div>
-
-    <!-- ACTION BUTTONS -->
-    <div class="actions">
-      <button onclick="location.reload()">🔄 Refresh Stream</button>
-      <button onclick="alert('Try another source')">🔁 Other Links</button>
-    </div>
-
-    <!-- CHAT -->
-    <div class="chat">
-      <iframe
-        src="https://tlk.io/crichd?theme=dark"
-        width="100%"
-        height="100%"
-        frameborder="0">
-      </iframe>
-    </div>
-
-  </div>
-
-  <!-- RIGHT ADS -->
-  <div class="sidebar">
-    <img src="https://via.placeholder.com/120x300?text=Ad">
-    <img src="https://via.placeholder.com/120x300?text=Ad">
-  </div>
+<div class="footer">
+<b>Legal Disclaimer</b><br><br>
+YoNoTV does not host any video content. All streams are embedded from publicly available third-party sources.<br><br>
+DMCA: yonotvlive@gmail.com
+</div>
 
 </div>
 
-<footer>
-  DMCA: This site does not host any video streams. All streams are provided by third-party sources.
-</footer>
-
 <script>
-function toggleMode(){
-  document.body.classList.toggle("light");
+function toggleDark(){
+  document.body.classList.toggle("dark");
 }
 
-/* SRC HANDLER */
-const url = new URLSearchParams(window.location.search);
-const src = url.get("src");
+const params = new URLSearchParams(window.location.search);
+const src = params.get("src");
 
 if(src){
-  document.getElementById("player").src = src;
+  document.getElementById("frame").src = decodeURIComponent(src);
 }
 </script>
 
