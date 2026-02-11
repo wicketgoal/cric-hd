@@ -110,6 +110,72 @@ body.dark .notice{ background:#222; }
   margin-top:15px;
 }
 body.dark .footer{ background:#1a1a1a; }
+
+
+  /* TELEGRAM CODES */
+  
+  
+  .telegram-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  width: 100%;
+  padding: 16px 12px;
+  background: #0088cc;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 8px;
+  margin: 15px 0;
+  animation: blinkPulse 1.5s infinite;
+}
+
+/* Telegram icon */
+.tg-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+/* Hover effect (desktop) */
+.telegram-cta:hover {
+  background: #006da3;
+}
+
+/* Blinking + pulse animation */
+@keyframes blinkPulse {
+  0% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0,136,204,0.7);
+  }
+  50% {
+    opacity: 0.85;
+    box-shadow: 0 0 14px 6px rgba(0,136,204,0.4);
+  }
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(0,136,204,0.7);
+  }
+}
+
+/* 📱 Mobile optimization */
+@media (max-width: 600px) {
+  .telegram-cta {
+    font-size: 16px;
+    padding: 14px 10px;
+    border-radius: 6px;
+  }
+
+  .tg-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+  
+  
+
+  
 </style>
 </head>
 
@@ -133,6 +199,19 @@ body.dark .footer{ background:#1a1a1a; }
   Loading stream… If buffering occurs, refresh or try another link
 </div>
 
+
+<a class="telegram-cta" href="https://t.me/wicketgoal" target="_blank">
+  <span class="tg-icon">
+    <svg viewbox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="120" cy="120" fill="#ffffff" r="120">
+      <path d="M179.8 69.6L150 190.2c-2.2 8.5-8 10.6-16.2 6.6l-44.7-33-21.6 20.8c-2.4 2.4-4.4 4.4-9 4.4l3.2-45.6 83-74.8c3.6-3.2-.8-5-5.6-1.8L40.8 122.6l-43-13.4c-9.4-3-9.6-9.4 2-13.8L167.6 52c7.8-3 14.6 1.8 12.2 17.6z" fill="#0088cc">
+    </path></circle></svg>
+  </span>
+  <span class="tg-text">Join our Telegram Channels for B€tingTips and Live Links !</span>
+</a> 
+
+
+  
 <div class="player-wrap">
   <iframe id="frame" allowfullscreen allow="autoplay; encrypted-media"></iframe>
 </div>
@@ -186,6 +265,7 @@ if(src){
   
 </body>
 </html>
+
 
 
 
