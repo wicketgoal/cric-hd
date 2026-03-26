@@ -177,6 +177,82 @@ body.dark .footer{ background:#1a1a1a; }
 
   
 </style>
+
+
+<!-- Floating Ad Container -->
+<div id="floatingAdWrapper" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center the close text and ad */
+  z-index: 9999;
+  gap: 4px;
+  font-family: Arial, sans-serif;
+">
+
+  <!-- Close Text with background (smaller) -->
+  <span id="closeFloatingAd" style="
+    color: red;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 12px; /* smaller text */
+    user-select: none;
+    background: rgba(240,240,240,0.9); /* subtle gray background */
+    padding: 2px 6px; /* smaller padding */
+    border-radius: 5px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: background 0.2s, color 0.2s;
+  " title="Close Ad">Close Ad ×</span>
+
+  <!-- Ad Box -->
+  <div id="floatingAd" style="
+    width: 260px;
+    height: 250px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    overflow: hidden;
+  ">
+    <!-- Your AdSense Code -->
+    <script async="async" data-cfasync="false" src="https://fixesconsessionconsession.com/4d7e08f5df661c8a3dd2d56138d74294/invoke.js"></script>
+<div id="container-4d7e08f5df661c8a3dd2d56138d74294"></div>
+
+  </div>
+</div>
+
+<!-- Close Button Script -->
+<script>
+  document.getElementById('closeFloatingAd').onclick = function() {
+    document.getElementById('floatingAdWrapper').style.display = 'none';
+  };
+</script>
+
+<!-- Responsive CSS -->
+<style>
+  @media screen and (max-width: 768px){
+    #floatingAd { width: 200px; height: 200px; }
+    #floatingAd ins { width: 200px !important; height: 200px !important; }
+    #closeFloatingAd { font-size: 10px; padding: 1px 5px; border-radius: 4px; }
+  }
+  @media screen and (max-width: 480px){
+    #floatingAd { width: 150px; height: 150px; }
+    #floatingAd ins { width: 150px !important; height: 150px !important; }
+    #closeFloatingAd { font-size: 9px; padding: 1px 4px; border-radius: 4px; }
+  }
+
+  /* Hover effect for close text */
+  #closeFloatingAd:hover {
+    background: rgba(220,220,220,0.95);
+    color: darkred;
+  }
+</style>
+
+
+
+  
 </head>
 
 <body>
